@@ -6,84 +6,37 @@ import { CourseGrid } from "@/components/courses/CourseGrid";
 const Courses = () => {
   const navigate = useNavigate();
 
-  const { data: courses, isLoading, error } = useQuery({
+  const { data: courses } = useQuery({
     queryKey: ["public-courses"],
     queryFn: async () => {
-      console.log("Iniciando fetching de cursos publicados...");
-      try {
-        // Consulta simplificada para cursos publicados
-        const { data: coursesData, error: coursesError } = await supabase
-          .from("courses")
-          .select(`
+      const { data: coursesData } = await supabase
+        .from("courses")
+        .select(`
+          id,
+          title,
+          description,
+          banner_url,
+          thumbnail_url,
+          induction_video_url,
+          level,
+          price_cop,
+          original_price_cop,
+          discount_percentage,
+          duration,
+          instructor:instructors (
             id,
-            title,
-            description,
-            banner_url,
-            thumbnail_url,
-            induction_video_url,
-            level,
-            price_cop,
-            original_price_cop,
-            discount_percentage,
-            duration,
-            instructor:instructors (
-              id,
-              name,
-              avatar_url
-            )
-          `)
-          .order('created_at', { ascending: false });
+            name,
+            avatar_url,
+            bio
+          ),
+          is_published
+        `)
+        .eq("is_published", true);
 
-        if (coursesError) {
-          console.error("Error fetching courses:", coursesError);
-          throw coursesError;
-        }
-
-        console.log("Cursos obtenidos:", coursesData);
-
-        if (!coursesData) {
-          console.log("No se encontraron cursos");
-          return [];
-        }
-
-        // Procesar los cursos
-        const processedCourses = coursesData.map(course => ({
-          ...course,
-          averageRating: 5, // Valor por defecto
-          totalRatings: 0,
-          completedStudents: 0
-        }));
-
-        console.log("Cursos procesados:", processedCourses);
-        return processedCourses;
-      } catch (error) {
-        console.error("Error en el procesamiento de cursos:", error);
-        throw error;
-      }
+      return coursesData || [];
     },
-    staleTime: 1000 * 60 * 5 // 5 minutos
+    staleTime: 1000 * 60 * 5, // 5 minutos
   });
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-red-600"></div>
-      </div>
-    );
-  }
-
-  if (error) {
-    console.error("Error en el componente Courses:", error);
-    return (
-      <div className="text-center py-12">
-        <p className="text-red-600 text-lg">
-          Error al cargar los cursos. Por favor, intenta de nuevo más tarde.
-        </p>
-      </div>
-    );
-  }
-
-  console.log("Renderizando cursos:", courses);
 
   return (
     <div className="min-h-screen bg-white">
@@ -124,7 +77,10 @@ const Courses = () => {
 
       {/* Courses Grid */}
       <div className="container mx-auto px-4 pb-20">
-        <CourseGrid courses={courses || []} navigate={navigate} />
+        <div className="container mx-auto px-4 py-8">
+          <h1 className="text-3xl font-bold mb-8">Cursos Disponibles</h1>
+          <CourseGrid courses={courses || []} navigate={navigate} />
+        </div>
       </div>
     </div>
   );

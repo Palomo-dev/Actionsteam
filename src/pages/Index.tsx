@@ -1,40 +1,22 @@
-import { Suspense, lazy } from "react";
-import { LoadingSpinner } from "@/components/ui/loading-spinner";
-
-// Importaciones lazy de componentes
-const HeroSection = lazy(() => import("@/components/home/HeroSection").then(module => ({
-  default: module.HeroSection
-})));
-const ValueProposition = lazy(() => import("@/components/home/ValueProposition").then(module => ({
-  default: module.ValueProposition
-})));
-const TestimonialsSection = lazy(() => import("@/components/home/TestimonialsSection").then(module => ({
-  default: module.TestimonialsSection
-})));
-const NewsSection = lazy(() => import("@/components/home/NewsSection").then(module => ({
-  default: module.NewsSection
-})));
-const ContactSection = lazy(() => import("@/components/home/ContactSection").then(module => ({
-  default: module.ContactSection
-})));
-const CTASection = lazy(() => import("@/components/home/CTASection").then(module => ({
-  default: module.CTASection
-})));
+import { HeroSection } from "@/components/home/HeroSection";
+import { ValueProposition } from "@/components/home/ValueProposition";
+import { TestimonialsSection } from "@/components/home/TestimonialsSection";
+import { NewsSection } from "@/components/home/NewsSection";
+import { ContactSection } from "@/components/home/ContactSection";
+import { CTASection } from "@/components/home/CTASection";
 
 const Index = () => {
   return (
-    <div className="animate-fade-in bg-white">
+    <div className="bg-white">
       <div className="relative">
-        <Suspense fallback={<LoadingSpinner />}>
-          <div className="relative z-10">
-            <HeroSection />
-            <ValueProposition />
-            <TestimonialsSection />
-            <NewsSection />
-            <ContactSection />
-            <CTASection />
-          </div>
-        </Suspense>
+        <div className="relative z-10">
+          <HeroSection />
+          <ValueProposition />
+          <TestimonialsSection />
+          <NewsSection />
+          <ContactSection />
+          <CTASection />
+        </div>
       </div>
     </div>
   );
