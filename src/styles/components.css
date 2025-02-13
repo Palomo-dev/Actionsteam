@@ -1,0 +1,27 @@
+@layer components {
+  .hover-glow {
+    @apply transition-all duration-300;
+  }
+
+  .hover-glow:hover {
+    @apply animate-glow;
+  }
+
+  .hover-card-animation {
+    @apply transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/20;
+  }
+
+  .button-gradient {
+    @apply bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 transition-all duration-300;
+  }
+
+  .button-outline-gradient {
+    @apply border border-gray-700 hover:border-purple-500/50 hover:bg-purple-500/10 transition-all duration-300;
+  }
+}
+
+.bg-grid-pattern {
+  background-image: linear-gradient(to right, rgba(229, 231, 235, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(229, 231, 235, 0.1) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
